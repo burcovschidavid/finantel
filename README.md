@@ -15,6 +15,6 @@
 <ul>
     <li><b>Coordonator:</b> Conf.univ.dr. Cătălin Strîmbei</li>
     <li><b>Autor 1:</b> Capitanu Teodora</li>
-    <li><b>Autor 2:</b> Olaru Amaliza Gabriela</li>
+    <li><b>Autor 2:</b> Olaru Amalia Gabriela</li>
     <li><b>Autor 3:</b> Burcovschi David</li>
 </ul>
