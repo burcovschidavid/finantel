@@ -1,5 +1,5 @@
 <h1>Finantel</h1>
-<h2>UAIC - FEAA - 2021 - SIA11 - 4</h2>
+<h2>UAIC - FEAA - 2021 - SIA11 - 11</h2>
 <h3>Management financiar si educatie financiara</h3>
 <h4>Scopul proiectului</h4>
 <p>Incurajarea urmarii cheltuielilor si a veniturilor pentru o mai buna monitorizare si optimizare</p>
