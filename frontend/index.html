@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Transactions management</title>
+</head>
+<body>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <h1>Transactions management</h1>
+            <hr>
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" class="form-control" placeholder="amount">
+            </div>
+
+            <div class="form-group">
+                <label for="send_to">Send to:</label>
+                <select class="form-control" id="send_to">
+                    <option value="">--Choose a destinatary--</option>
+                    <option value="100">IBAN: FIN90RONCRT0000100</option>
+                    <option value="200">IBAN: FIN90RONCRT0000200</option>
+                    <option value="300">IBAN: FIN90RONCRT0000300</option>
+                    <option value="400">IBAN: FIN90RONCRT0000400</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="send_from">Send from:</label>
+                <select class="form-control" id="send_from">
+                    <option value="">--Choose a destinatary--</option>
+                    <option value="100">IBAN: FIN90RONCRT0000700</option>
+                    <option value="200">IBAN: FIN90RONCRT0000800</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <textarea class="form-control" id="reference" placeholder="Reference..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <a class="btn btn-danger" href="#" onclick="sendMoney()">Send money!</a>
+            </div>
+
+        </div>
+
+
+        <div class="col-md-6">
+            <h1>Live transactions list</h1>
+            <div id="transactions-list" >
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+<script>
+
+
+    function sendMoney(){
+        $.ajax({"url":"http://localhost:8080/api/transactions","type":"POST","data":JSON.stringify({"amount":((-1)*parseInt($("#amount").val())),"account_id":$("#send_from").val(),"reference":$("#reference").val()}),"success":function(data){
+
+        },contentType:"application/json; charset=utf-8",
+  dataType:"json"});
+
+  $.ajax({"url":"http://localhost:8080/api/transactions","type":"POST","data":JSON.stringify({"amount":(parseInt($("#amount").val())),"account_id":$("#send_to").val(),"reference":$("#reference").val()}),"success":function(data){
+
+            retrieveTransactions()
+        },contentType:"application/json; charset=utf-8",
+  dataType:"json"});
+    }
+
+    function retrieveTransactions(){
+        $.get("http://localhost:8080/api/transactions",function (data){
+
+            $("#transactions-list").html("")
+            for(var i=0;i<data.length;i++){
+                var transaction_data=data[i];
+                $("#transactions-list").prepend(transaction(transaction_data.id,transaction_data.account_id,transaction_data.amount,transaction_data.reference,transaction_data.datetime));
+            }
+        });
+    }
+
+    function transaction(id,from,amount,reference,date){
+    var color = "green"
+    if(amount<0)
+        color="red"
+        return `
+            <div class="row" style="background: lightgrey">
+                <div class="col-md-12">
+                    <h4>FIN90RONCRT0000${from}</h4>
+                    <h5 style="color: ${color}">${amount} RON</h5>
+                    <p class="lead">${reference}</p>
+                    <p class="small">${date}</p>
+                </div>
+            </div>
+            <hr>
+        `;
+    }
+
+    $(document).ready(function(){ retrieveTransactions() });
+</script>
+
+</body>
+</html>

@@ -13,12 +13,13 @@ public class UsersController {
     @Autowired
 
     private UserRepository userRepository;
+    @CrossOrigin(origins = "http://localhost:8003")
     @GetMapping("/api/users")
     public @ResponseBody
     Iterable<User> all(){
         return userRepository.findAll();
     }
-
+    @CrossOrigin(origins = "http://localhost:8003")
     @PostMapping("/api/users")
     public @ResponseBody
     User add(@RequestBody User user){
@@ -26,14 +27,14 @@ public class UsersController {
         userRepository.save(user);
         return user;
     }
-
+    @CrossOrigin(origins = "http://localhost:8003")
     @PutMapping("/api/users")
     public @ResponseBody
     User update(@RequestBody User user){
         userRepository.save(user);
         return user;
     }
-
+    @CrossOrigin(origins = "http://localhost:8003")
     @DeleteMapping("/api/users")
     public @ResponseBody
     Iterable<User> delete(@RequestBody User user){
